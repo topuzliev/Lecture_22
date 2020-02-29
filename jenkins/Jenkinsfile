@@ -1,5 +1,5 @@
-def appName=""
-def appVersion=""
+def appName="my-app"
+def appVersion="1.0-SNAPSHOT"
 
 node('dockerslave'){
     tool name: 'maven', type: 'maven'
@@ -18,8 +18,8 @@ node('dockerslave'){
          
                 withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
                 sh 'mvn -B -DskipTests clean package'
-                appName = sh (script: "mvn help:evaluate -Dexpression=project.name | grep -v \"[\"", returnStdout: true).trim())
-                appVersion = sh (script: "mvn help:evaluate -Dexpression=project.version | grep grep -v \"[\"", returnStdout: true).trim())
+ //               appName = sh (script: "mvn help:evaluate -Dexpression=project.name | grep -v \"[\"", returnStdout: true).trim()
+  //              appVersion = sh (script: "mvn help:evaluate -Dexpression=project.version | grep grep -v \"[\"", returnStdout: true).trim()
             }
         }
             stage('Test') {
