@@ -41,9 +41,18 @@ node('dockerslave1'){
         sh 'docker -v'
             }
             
+        stage('Get Dockerfile'){
+            git branch: 'master',
+            url: 'https://github.com/topuzliev/Lecture_22.git'
+            } 
     stage('unstash our application'){
         unstash 'artifactStash'
             } 
+    stage('Build Dockerfile'){
+            withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
+            sh "docker build -e APP_NAME=${appName} -e APP_VERSION=${appVersion} -t myappdocker"
+            } 
+    }
     }
         
     }
