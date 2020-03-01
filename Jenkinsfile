@@ -32,7 +32,7 @@ node('dockerslave'){
         }
 }
 }
-node('dockerslave'){
+node('dockerslave1'){
     tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
     
     stage('Check prerequest'){
@@ -43,15 +43,16 @@ node('dockerslave'){
             }
             
         stage('Get Dockerfile'){
-            git branch: 'master',
-            url: 'https://github.com/topuzliev/Lecture_22.git'
+            git(url: 'git@github.com:topuzliev/Lecture_22.git', branch: "master", credentialsId: 'git')
+ //           git branch: 'master',
+ //           url: 'https://github.com/topuzliev/Lecture_22.git'
             } 
 
-    stage('unstash our application'){
-        unstash 'artifactStash'
+        stage('unstash our application'){
+            unstash 'artifactStash'
             } 
             
-    stage('Build Dockerfile'){
+        stage('Build Dockerfile'){
             withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
             sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker ."
             sh "docker images"
