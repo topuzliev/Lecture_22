@@ -32,8 +32,9 @@ node('dockerslave'){
         }
 }
 }
-node('dockerslave1'){
+node('dockerslave'){
     tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+    
     stage('Check prerequest'){
         echo "${tool 'Docker'}"
         sh 'ls -lah'
@@ -45,9 +46,11 @@ node('dockerslave1'){
             git branch: 'master',
             url: 'https://github.com/topuzliev/Lecture_22.git'
             } 
+
     stage('unstash our application'){
         unstash 'artifactStash'
             } 
+            
     stage('Build Dockerfile'){
             withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
             sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker ."
