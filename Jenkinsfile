@@ -5,30 +5,33 @@ node('dockerslave'){
     tool name: 'maven', type: 'maven'
     stage('Check prerequest'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-        sh 'env | grep PATH'
-        echo "${tool 'maven'}"
-        sh 'mvn -v'
+            sh 'env | grep PATH'
+            echo "${tool 'maven'}"
+            sh 'mvn -v'
     }
+ ///
+    }   
+
     stage('Get source'){
         git branch: 'master',
         url: 'https://github.com/jenkins-docs/simple-java-maven-app.git'
     }
+    
     stage('Build') {
-         
-                withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+        withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-            stage('Test') {
-          
-                withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-                sh 'mvn test'
-                stash include: 'taregt/my-app-1.0-SNAPSHOT.jar', name: 'artifactStash'
-           
-            }
+            
+    stage('Test') {
+        withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+            sh 'mvn test'
+            stash include: 'taregt/my-app-1.0-SNAPSHOT.jar', name: 'artifactStash'
         }
+    }
+//}
 }
-}
+
 node('dockerslave1'){
     tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
     
@@ -57,12 +60,9 @@ node('dockerslave1'){
     stage('Push image'){
        withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
             withDockerRegistry(credentialsId: 'dockerhub', toolName: 'Docker', url: 'https://index.docker.io/v1/'){
- //               sh "docker tag myappdocker:latest topuzliev/myappdocker:latest"
- //               sh "docker push topuzliev/myappdocker:latest"
-                sh "docker push myappdocker:latest"
-                
-                
-            }
+                sh "docker tag myappdocker:latest topuzliev/myappdocker:latest"
+                sh "docker push topuzliev/myappdocker:latest"
+             }
     }
     }
     }
