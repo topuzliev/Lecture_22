@@ -63,6 +63,7 @@ node('dockerslave1'){
     stage('Push image'){
         withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
             withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/'){
+                sh "docker -v"
                 sh "docker images"
                 sh "docker push myappdocker:latest"
             }
