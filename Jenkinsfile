@@ -43,7 +43,7 @@ node('dockerslave1'){
             }
             
         stage('Get Dockerfile'){
-            git(url: 'git@github.com:topuzliev/Lecture_22.git', branch: "master", credentialsId: 'git')
+            git(url: 'git@github.com:topuzliev/Lecture_22.git', branch: "master", credentialsId: 'Privet')
  //           git branch: 'master',
  //           url: 'https://github.com/topuzliev/Lecture_22.git'
             } 
