@@ -56,6 +56,7 @@ node('dockerslave1'){
             withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
             sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker ."
             sh "docker images"
+            
  //           sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker"
             } 
     }
