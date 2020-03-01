@@ -68,6 +68,8 @@ node('dockerslave1'){
  //               sh "docker push myappdocker:latest"
                 sh "docker -v"
                 sh "docker images"
+                sh "docker tag myappdocker:latest topuzliev/myappdocker:latest"
+                sh "docker push topuzliev/myappdocker:latest"
                 
             }
     }
