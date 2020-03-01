@@ -3,7 +3,7 @@ def appVersion="1.0-SNAPSHOT"
 
 node('dockerslave'){
     tool name: 'maven', type: 'maven'
-    stage('Check prerequest'){
+    stage('Check Prerequest'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
             sh 'env | grep PATH'
             echo "${tool 'maven'}"
@@ -33,18 +33,18 @@ node('dockerslave'){
 node('dockerslave1'){
     tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
     
-    stage('Check prerequest'){
+    stage('Check Prerequest'){
             echo "${tool 'Docker'}"
             withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
                 sh 'docker -v'
             }
     }    
-///////
+
         stage('Get Dockerfile'){
             git(url: 'git@github.com:topuzliev/Lecture_22.git', branch: "master", credentialsId: 'Privet')
         } 
 
-        stage('unstash our application'){
+        stage('Unstash Our Application'){
             unstash 'artifactStash'
         } 
             
@@ -55,7 +55,7 @@ node('dockerslave1'){
             } 
         }
 
-    stage('Push image'){
+    stage('Push Image'){
        withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
             withDockerRegistry(credentialsId: 'dockerhub', toolName: 'Docker', url: 'https://index.docker.io/v1/'){
                 sh "docker tag myappdocker:latest topuzliev/myappdocker:latest"
@@ -63,5 +63,4 @@ node('dockerslave1'){
             }
         }
     }
-//////    }
 }
