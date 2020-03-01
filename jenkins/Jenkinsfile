@@ -51,18 +51,21 @@ node('dockerslave1'){
     stage('Build Dockerfile'){
             withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
             sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker ."
+            sh "docker images"
  //           sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker"
             } 
     }
-withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/r/') {
-    def image = docker.build("topuzliev/${appName}-${appVersion}", "--build-arg APP_VERSION=${appVersion} ./tmp-docker-build-context")
-            image.push()
+
+    stage('Push image'){
+        withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
+            withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/'){
+                sh "docker images"
+                sh "docker push myappdocker:latest"
+            }
+    }
+    }
     }
 }
-    
-        
-    }
-    
     
 
 
