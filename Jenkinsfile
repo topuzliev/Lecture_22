@@ -69,7 +69,7 @@ node('dockerslave1'){
                 sh "docker -v"
                 sh "docker images"
                 
-            }
+ //           }
     }
     }
     }
