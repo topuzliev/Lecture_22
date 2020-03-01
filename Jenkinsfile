@@ -40,20 +40,20 @@ node('dockerslave1'){
             }
     }    
 
-        stage('Get Dockerfile'){
-            git(url: 'git@github.com:topuzliev/Lecture_22.git', branch: "master", credentialsId: 'Privet')
-        } 
+    stage('Get Dockerfile'){
+        git(url: 'git@github.com:topuzliev/Lecture_22.git', branch: "master", credentialsId: 'Privet')
+    } 
 
-        stage('Unstash Our Application'){
-            unstash 'artifactStash'
-        } 
+    stage('Unstash Our Application'){
+        unstash 'artifactStash'
+    } 
             
-        stage('Build Dockerfile'){
-            withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
-                sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker ."
-                sh "docker images"
-            } 
-        }
+    stage('Build Dockerfile'){
+        withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
+            sh "docker build --no-cache --build-arg APP_NAME=${appName} --build-arg APP_VERSION=${appVersion} -t myappdocker ."
+            sh "docker images"
+        } 
+    }
 
     stage('Push Image'){
        withEnv(["PATH=${env.PATH}:${tool 'Docker'}/bin"]){
